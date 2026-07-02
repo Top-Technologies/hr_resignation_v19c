@@ -27,6 +27,14 @@ class HrClearance(models.Model):
         ('header2', 'Header 2'),
     ], string='Header Image', default='header1')
 
+    remaining_time_off = fields.Char(
+        string='Remaining Time Off (Days)',
+        related='employee_id.allocation_remaining_display',
+        help="Employee's current Time Off balance, read live from the Time Off app. "
+             "This is not stored here, so it always matches the balance shown everywhere "
+             "else in Odoo (Time Off dashboard, employee profile, etc.).",
+    )
+
     def update_state(self):
         for rec in self:
             all_completed = rec.checklist_ids and all(line.status == 'completed' for line in rec.checklist_ids)
@@ -320,4 +328,3 @@ class HrClearanceLine(models.Model):
         line = super(HrClearanceLine, self).create(vals)
         line.clearance_id.update_state()
         return line
-    
