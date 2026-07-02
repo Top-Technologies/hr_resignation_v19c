@@ -62,7 +62,7 @@
                     <sheet>
                         <div class="oe_title">
                             <h1>
-                                <field name="employee_id" readonly="state != 'draft'"/>
+                                <field name="employee_id" readonly="state != 'draft' or not is_hr_manager"/>
                             </h1>
                         </div>
                         <group>

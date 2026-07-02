@@ -35,7 +35,12 @@ class HrResignation(models.Model):
 
     # --- Standard Fields ---
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
-    employee_id = fields.Many2one('hr.employee', string='Employee', required=True)
+    
+    def _default_employee_id(self):
+        employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        return employee.id if employee else False
+
+    employee_id = fields.Many2one('hr.employee', string='Employee', required=True, default=_default_employee_id)
     requested_by = fields.Many2one('res.users', string='Requested By', tracking=True, default=lambda self: self.env.user)
     department_id = fields.Many2one('hr.department', string='Department', related='employee_id.department_id', store=True)
     job_id = fields.Many2one('hr.job', string='Job Position', related='employee_id.job_id', store=True)
