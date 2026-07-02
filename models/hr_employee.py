@@ -33,3 +33,13 @@ class HrEmployee(models.Model):
             'domain': [('employee_id', '=', self.id)],
             'context': {'default_employee_id': self.id},
         }
+
+class HrEmployeePublic(models.Model):
+    _inherit = 'hr.employee.public'
+    
+    # DUMMY FIELD: Non-stored compute to prevent access errors without crashing the SQL view
+    attendance_policy_id = fields.Many2one('hr.department', string="Attendance Policy (Dummy)", compute='_compute_dummy_attendance', store=False)
+    
+    def _compute_dummy_attendance(self):
+        for rec in self:
+            rec.attendance_policy_id = False

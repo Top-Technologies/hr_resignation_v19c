@@ -60,15 +60,16 @@
                         <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved_manager,approved_hr,done"/>
                     </header>
                     <sheet>
+                        <field name="is_hr_manager" invisible="1"/>
                         <div class="oe_title">
                             <h1>
                                 <field name="employee_id" readonly="state != 'draft' or not is_hr_manager"/>
                             </h1>
                         </div>
+
                         <group>
                             <group>
                                 <field name="is_direct_manager" invisible="1"/>
-                                <field name="is_hr_manager" invisible="1"/>
                                 <field name="can_reject" invisible="1"/>
                                 
                                 <field name="requested_by" string="Requested By" readonly="state != 'draft'" groups="hr.group_hr_user"/>
