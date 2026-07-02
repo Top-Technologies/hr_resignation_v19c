@@ -31,6 +31,14 @@
 
     <template id="report_hr_clearance">
         <t t-call="web.html_container">
+            <style>
+                @font-face {
+                    font-family: 'NotoSansEthiopic';
+                    src: url('/hr_resignation_v19c/static/fonts/NotoSansEthiopic-Regular.ttf') format('truetype');
+                    font-weight: normal;
+                    font-style: normal;
+                }
+            </style>
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.basic_layout">
                     <div class="page">
@@ -106,7 +114,7 @@
                         <br/>
                         
                          <!-- 4. Section: Confirmation Notes (in Amharic) -->
-                        <div class="mt-4" style="font-family: 'Nyala', 'Abyssinica SIL', sans-serif;">
+                        <div class="mt-4" style="font-family: 'NotoSansEthiopic', 'Nyala', 'Abyssinica SIL', sans-serif;">
                             <ul>
                                 <li class="mb-2">ይህ ክሊራንስ ሰራተኛዉ ከድርጅቱ የወሰደዉን ንብረት ወይም ገንዘብ ሁሉ መመለሱን ወይም አለመዉሰዱን ያረጋግጣል፡፡</li>
                                 <li class="mb-2">This clearance certifies that the employee has either returned all property or money taken from the organization, or confirms that none was taken.</li>
