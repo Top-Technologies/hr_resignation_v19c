@@ -10,6 +10,7 @@ class HrResignation(models.Model):
     # --- Security Visibility Fields (Hidden in UI) ---
     is_direct_manager = fields.Boolean(compute='_compute_access_rights')
     is_hr_manager = fields.Boolean(compute='_compute_access_rights')
+    is_hr_user = fields.Boolean(compute='_compute_access_rights')
     can_reject = fields.Boolean(compute='_compute_access_rights')
 
     @api.depends('manager_id.user_id', 'state')
@@ -25,6 +26,7 @@ class HrResignation(models.Model):
             
             rec.is_direct_manager = is_manager or is_admin
             rec.is_hr_manager = self.env.user.has_group('hr.group_hr_manager') or is_admin
+            rec.is_hr_user = self.env.user.has_group('hr.group_hr_user') or is_admin
             
             if rec.state == 'submitted' and rec.is_direct_manager:
                 rec.can_reject = True
@@ -37,7 +39,8 @@ class HrResignation(models.Model):
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
     
     def _default_employee_id(self):
-        employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        # Use sudo() to bypass record rules that might hide the employee record from normal users
+        employee = self.env['hr.employee'].sudo().search([('user_id', '=', self.env.uid)], limit=1)
         return employee.id if employee else False
 
     employee_id = fields.Many2one('hr.employee', string='Employee', required=True, default=_default_employee_id)
